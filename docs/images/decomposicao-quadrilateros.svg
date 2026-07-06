@@ -1,0 +1,52 @@
+<svg width="680" height="590" viewBox="0 0 680 590" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Decomposição de polígono em quadrilátero + 3 sub-polígonos recursivos</title>
+<desc>Polígono convexo com vértices A, I, J e B destacados.</desc>
+
+<rect x="0" y="0" width="680" height="590" fill="#FFFFFF"/>
+
+<path d="M340,70 L426.8,89.8 L496.4,145.3 L535,225.5 L535,314.5 Z" fill="#EEEDFE" opacity="0.9"/>
+<path d="M535,314.5 L496.4,394.7 L426.8,450.2 L340,470 L253.2,450.2 Z" fill="#E1F5EE" opacity="0.9"/>
+<path d="M253.2,450.2 L183.6,394.7 L145,314.5 L145,225.5 L183.6,145.3 Z" fill="#FBEAF0" opacity="0.9"/>
+
+<path d="M340,70 L535,314.5 L253.2,450.2 L183.6,145.3 Z" fill="#F5C4B3" opacity="0.55"/>
+
+<polygon points="340,70 426.8,89.8 496.4,145.3 535,225.5 535,314.5 496.4,394.7 426.8,450.2 340,470 253.2,450.2 183.6,394.7 145,314.5 145,225.5 183.6,145.3 253.2,89.8" fill="none" stroke="#888780" stroke-width="1" opacity="0.6"/>
+
+<circle cx="426.8" cy="89.8" r="3" fill="#888780"/>
+<circle cx="496.4" cy="145.3" r="3" fill="#888780"/>
+<circle cx="535" cy="225.5" r="3" fill="#888780"/>
+<circle cx="496.4" cy="394.7" r="3" fill="#888780"/>
+<circle cx="426.8" cy="450.2" r="3" fill="#888780"/>
+<circle cx="340" cy="470" r="3" fill="#888780"/>
+<circle cx="183.6" cy="394.7" r="3" fill="#888780"/>
+<circle cx="145" cy="314.5" r="3" fill="#888780"/>
+<circle cx="145" cy="225.5" r="3" fill="#888780"/>
+<circle cx="253.2" cy="89.8" r="3" fill="#888780"/>
+
+<line x1="340" y1="70" x2="535" y2="314.5" stroke="#db6732" stroke-width="3" stroke-linecap="round"/>
+<line x1="535" y1="314.5" x2="253.2" y2="450.2" stroke="#db6732" stroke-width="3" stroke-linecap="round"/>
+<line x1="253.2" y1="450.2" x2="183.6" y2="145.3" stroke="#db6732" stroke-width="3" stroke-linecap="round"/>
+<line x1="183.6" y1="145.3" x2="340" y2="70" stroke="#db6732" stroke-width="2" stroke-dasharray="6 5" stroke-linecap="round"/>
+
+<circle cx="340" cy="70" r="6" fill="#2C2C2A" stroke="#FFFFFF" stroke-width="1.5"/>
+<circle cx="535" cy="314.5" r="6" fill="#2C2C2A" stroke="#FFFFFF" stroke-width="1.5"/>
+<circle cx="253.2" cy="450.2" r="6" fill="#2C2C2A" stroke="#FFFFFF" stroke-width="1.5"/>
+<circle cx="183.6" cy="145.3" r="6" fill="#2C2C2A" stroke="#FFFFFF" stroke-width="1.5"/>
+
+<text x="340" y="50" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="600" fill="#2C2C2A">A</text>
+<text x="560" y="318" text-anchor="start" font-family="sans-serif" font-size="14" font-weight="600" fill="#2C2C2A">I</text>
+<text x="225" y="474" text-anchor="end" font-family="sans-serif" font-size="14" font-weight="600" fill="#2C2C2A">J</text>
+<text x="120" y="148" text-anchor="end" font-family="sans-serif" font-size="14" font-weight="600" fill="#2C2C2A">B</text>
+
+<text x="328" y="245" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#4A1B0C">novo quadrilátero</text>
+<text x="328" y="260" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#4A1B0C">(cortes A–I, I–J, J–B)</text>
+
+<line x1="466.6" y1="169" x2="555" y2="120" stroke="#888780" stroke-width="0.5" stroke-dasharray="3 3"/>
+<text x="560" y="114" text-anchor="start" font-family="sans-serif" font-size="12" fill="#26215C">custo(A, I)</text>
+
+<line x1="410.3" y1="415.9" x2="410" y2="530" stroke="#888780" stroke-width="0.5" stroke-dasharray="3 3"/>
+<text x="410" y="544" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#04342C">custo(I, J)</text>
+
+<line x1="182.1" y1="306" x2="95" y2="306" stroke="#888780" stroke-width="0.5" stroke-dasharray="3 3"/>
+<text x="100" y="310" text-anchor="start" font-family="sans-serif" font-size="12" fill="#4B1528">custo(J, B)</text>
+</svg>
