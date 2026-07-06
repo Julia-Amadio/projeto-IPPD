@@ -45,7 +45,7 @@ até I, o pedaço de I até J, e o pedaço de J até B — ainda precisa ser
 decomposto, e isso é resolvido **recursivamente** pela mesma função:
 
 $$
-custo(a,b) = \min_{i,\ j} \Big[\ custo(a,i) + custo(i,j) + custo(j,b)+ d(a,i) \ + \ d(i,j) + d(j,b)\ \Big]
+custo(a,b) = \min_{i,\ j} \Big[\ custo(a,i) + custo(i,j) + custo(j,b) \ + \ d(a,i) + d(i,j) + d(j,b)\ \Big]
 $$
 
 onde `d(x, y)` é a distância euclidiana entre os vértices `x` e `y`:
