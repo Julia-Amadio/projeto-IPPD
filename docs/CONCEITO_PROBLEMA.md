@@ -45,7 +45,7 @@ até I, o pedaço de I até J, e o pedaço de J até B — ainda precisa ser
 decomposto, e isso é resolvido **recursivamente** pela mesma função:
 
 $$
-custo(a,b) = \min_{i,j} \Big[ custo(a,i) + custo(i,j) + custo(j,b)+ d(a,i) + d(i,j) + d(j,b) \Big]
+custo(a,b) = \min_{i,\ j} \Big[\ custo(a,i) + custo(i,j) + custo(j,b)+ d(a,i) \ + \ d(i,j) + d(j,b)\ \Big]
 $$
 
 onde `d(x, y)` é a distância euclidiana entre os vértices `x` e `y`:
@@ -92,13 +92,9 @@ graph TD
 
 ## 3. Por que os laços avançam de 2 em 2
 
-No código, os laços que buscam candidatos a `i` e `j` avançam em passos de
-**2** (`i = (i + 2) % size`). Isso não é acidental: cada quadrilátero consome
-um número **par** de vértices do contorno. Para que todo sub-polígono gerado
-pela recursão também seja decomponível em quadriláteros (nunca sobrando um
-pedaço com número ímpar de vértices, que não fecha em quads), os pontos de
-corte I e J precisam manter essa paridade em relação a A. É um detalhe de
-implementação que garante que a recursão só gere sub-polígonos "válidos".
+No código, os laços que buscam candidatos a `i` e `j` avançam em passos de 2 (`i = (i + 2) % size`). Isso garante que a distância de `a` até `i`, de `i` até `j`, e de `j` até `b` (contando vértices ao longo do contorno) seja sempre ímpar em cada um dos três trechos. 
+
+**Por quê isso importa:** o caso base da recursão (`custo(a,b) = 0`) só é válido quando `a` e `b` são vizinhos diretos, ou seja, quando a distância entre eles é **1** (o menor ímpar possível). Se a distância entre `a` e `b` for par, não existe forma de decompor aquele trecho em quadriláteros (sempre sobraria um vértice solto). É por isso que o próprio `process(a, b)` só é chamado, em qualquer nível da recursão, com pares `(a, b)` cuja distância ao longo do contorno é ímpar, e os passos de 2 nos laços preservam essa invariante nos três subproblemas gerados.
 
 ## 4. Passo a passo pelo código sequencial fornecido
 
@@ -127,6 +123,16 @@ Alguns pontos que vale destacar:
   polígono original. Isso não significa "distância física zero" — é um truque
   de modelagem: como esse lado já existe (não é um corte novo), ele não deve
   contar no custo.
+  - **É importante não confundir esse caso com a "moldura" A–B mencionada na 
+    Seção 2:** aquela pode perfeitamente ter comprimento real positivo (quando 
+    é uma diagonal herdada de uma chamada anterior, não um lado original). O 
+    que garante que ela "não conta" no custo de ``process(a,b)`` não é o valor 
+    zero, e sim o fato de que a fórmula simplesmente nunca soma ``d[a][b]``, 
+    só ``d[a][i] + d[i][j] + d[j][b]``. O zeramento de ``d[i][j] = 0`` no 
+    ``init()`` é uma coisa mais restrita: só serve para o caso base da 
+    recursão, onde a aresta **É** de fato original e por isso deve valer zero 
+    desde o começo — afinal, nesse caso específico não existe custo nenhum a 
+    ser pago: o lado já é parte do polígono original, não uma decisão de corte.
 - **`process(a, b, p)`** é a função recursiva de `custo(a, b)` descrita na
   seção 2. A checagem `if (p->m[a][b] >= 0) return p->m[a][b];` é exatamente
   a memoização: se esse subproblema já foi resolvido antes (por qualquer
@@ -142,7 +148,7 @@ Alguns pontos que vale destacar:
   menor custo total:
 
 $$
-\text{resposta} = \min_{i \,=\, 0}^{2N-1} \Big[\; d\big(i,\; (i+3) \bmod 2N\big) \;+\; custo\big((i+3) \bmod 2N,\; i\big) \;\Big]
+\text{resposta} = \min_{i \ = \ 0}^{2N-1} \Big[\ d\big(i,\ (i+3) \bmod 2N\big) \ + \ custo\big((i+3) \bmod 2N,\ i \big) \ \Big]
 $$
 
 ## 5. Complexidade computacional
