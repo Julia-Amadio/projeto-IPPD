@@ -169,6 +169,12 @@ int main() {
 
 		smaller = (2 * (MAXX - MINX) * (p->size));
 
+		/*
+		 * Cada iteração testa uma linha inicial diferente.
+		 * Redução --> combina o menor valor encontrado por cada thread.
+		 */
+		#pragma omp parallel for private(temp) reduction(min:smaller) \
+				schedule(static)
 		for (i = 0; i < p->size; i++) {
 			temp = p->m[(i + 3) % p->size][i]
 					+ p->d[(i + 3) % p->size][i];
