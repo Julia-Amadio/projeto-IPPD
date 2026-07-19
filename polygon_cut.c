@@ -32,23 +32,32 @@ void process_all(polygon_t * p) {
 	/*
 	 * Calcula primeiro os intervalos menores. Quando m[a][b] for calculado,
 	 * todos os subproblemas já estarão prontos.
+	 * A equipe de threads é criada uma única vez
 	 */
-	for (span = 3; span < p->size; span += 2) {
-		for (a = 0; a < p->size; a++) {
-			b = (a + span) % p->size;
-			p->m[a][b] = (2 * (MAXX - MINX) * p->size);
+	#pragma omp parallel private(span, b, i_offset, j_offset, i, j, temp)
+	{
+		for (span = 3; span < p->size; span += 2) {
+			/*
+			 * Para o mesmo span, cada valor de a calcula uma célula diferente.
+			 * A barreira implícita garante que o span termine antes do próximo.
+			 */
+			#pragma omp for schedule(static)
+			for (a = 0; a < p->size; a++) {
+				b = (a + span) % p->size;
+				p->m[a][b] = (2 * (MAXX - MINX) * p->size);
 
-			for (i_offset = 1; i_offset < span; i_offset += 2) {
-				i = (a + i_offset) % p->size;
+				for (i_offset = 1; i_offset < span; i_offset += 2) {
+					i = (a + i_offset) % p->size;
 
-				for (j_offset = i_offset + 1; j_offset < span;
-						j_offset += 2) {
-					j = (a + j_offset) % p->size;
-					temp = p->m[a][i] + p->m[i][j] + p->m[j][b]
-							+ p->d[a][i] + p->d[i][j] + p->d[j][b];
+					for (j_offset = i_offset + 1; j_offset < span;
+							j_offset += 2) {
+						j = (a + j_offset) % p->size;
+						temp = p->m[a][i] + p->m[i][j] + p->m[j][b]
+								+ p->d[a][i] + p->d[i][j] + p->d[j][b];
 
-					if (p->m[a][b] > temp)
-						p->m[a][b] = temp;
+						if (p->m[a][b] > temp)
+							p->m[a][b] = temp;
+					}
 				}
 			}
 		}
