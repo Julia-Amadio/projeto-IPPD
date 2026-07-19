@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#ifdef _OPENMP
-#include <omp.h>
-#endif
 
 #define SQUARE(a) ((a)*(a))
 #define MAXX 10000
@@ -105,12 +102,6 @@ int read_polygon(polygon_t ** p) {
 
 void init(polygon_t * p) {
 	int i, j;
-
-	/*
-	 * Cada par (i, j) escreve em uma posição diferente das matrizes.
-	 * Pode ser paralelizado
-	 */
-	#pragma omp parallel for collapse(2) schedule(static)
 	for (i = 0; i < p->size; i++) {
 		for (j = 0; j < p->size; j++) {
 			if ((i + 1) % p->size == j) {
