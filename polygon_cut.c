@@ -17,7 +17,7 @@ typedef struct polygon_s {
 	double * y;
 } polygon_t;
 
-double process(int, int, polygon_t *);
+void process_all(polygon_t *);
 polygon_t * allocate_polygon_data(int);
 int read_polygon(polygon_t **);
 double * allocate_vector(int, char);
@@ -25,25 +25,34 @@ double ** allocate_square_matrix(int, char);
 void init(polygon_t *);
 void free_polygon(polygon_t *);
 
-double process(int a, int b, polygon_t * p) {
-	int i, j;
+void process_all(polygon_t * p) {
+	int span, a, b, i_offset, j_offset, i, j;
 	double temp;
 
-	if (p->m[a][b] >= 0) {
-		return p->m[a][b];
-	}
+	/*
+	 * Calcula primeiro os intervalos menores. Quando m[a][b] for calculado,
+	 * todos os subproblemas já estarão prontos.
+	 */
+	for (span = 3; span < p->size; span += 2) {
+		for (a = 0; a < p->size; a++) {
+			b = (a + span) % p->size;
+			p->m[a][b] = (2 * (MAXX - MINX) * p->size);
 
-	p->m[a][b] = (2 * (MAXX - MINX) * (p->size));
-	for (i = (a + 1) % (p->size); i != b % (p->size); i = (i + 2) % (p->size)) {
-		for (j = (i + 1) % (p->size); j != (b + 1 + (p->size)) % (p->size);
-				j = (j + 2) % (p->size)) {
-			temp = process(a, i, p) + process(i, j, p) + process(j, b, p)
-					+ p->d[a][i] + p->d[i][j] + p->d[j][b];
-			if (p->m[a][b] > temp)
-				p->m[a][b] = temp;
+			for (i_offset = 1; i_offset < span; i_offset += 2) {
+				i = (a + i_offset) % p->size;
+
+				for (j_offset = i_offset + 1; j_offset < span;
+						j_offset += 2) {
+					j = (a + j_offset) % p->size;
+					temp = p->m[a][i] + p->m[i][j] + p->m[j][b]
+							+ p->d[a][i] + p->d[i][j] + p->d[j][b];
+
+					if (p->m[a][b] > temp)
+						p->m[a][b] = temp;
+				}
+			}
 		}
 	}
-	return p->m[a][b];
 }
 
 double * allocate_vector(int size, char name) {
@@ -147,11 +156,12 @@ int main() {
 
 	while (read_polygon(&p)) {
 		init(p);
+		process_all(p);
 
 		smaller = (2 * (MAXX - MINX) * (p->size));
 
 		for (i = 0; i < p->size; i++) {
-			temp = process((i + 3) % p->size, i, p)
+			temp = p->m[(i + 3) % p->size][i]
 					+ p->d[(i + 3) % p->size][i];
 			if (temp < smaller)
 				smaller = temp;
